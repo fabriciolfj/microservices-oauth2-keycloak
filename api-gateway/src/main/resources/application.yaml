@@ -1,13 +1,17 @@
 
 server:
   port: 8082
-
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
 spring:
   cloud:
     gateway:
       routes:
         - id: users-status-check
-          uri: http://localhost:9090
+          #uri: http://localhost:9090
+          uri: lb://resources
           predicates:
             - Path=/users/status/check
             - Method=GET
@@ -15,7 +19,7 @@ spring:
             - RemoveRequestHeader=Cookie
 
         - id: albums
-          uri: http://localhost:8091
+          uri: lb://albums
           predicates:
             - Path=/albums
             - Method=GET
@@ -23,7 +27,7 @@ spring:
             - RemoveRequestHeader=Cookie
 
         - id: photos
-          uri: http://localhost:8090
+          uri: lb://Photos
           predicates:
             - Path=/photos
             - Method=GET
